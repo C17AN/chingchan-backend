@@ -4,7 +4,7 @@ const { ServerApiVersion } = require("mongodb");
 
 const MongoClient = require("mongodb").MongoClient;
 
-module.exports.readData = async (event, context) => {
+module.exports.handler = async (event, context) => {
   // MongoDB connection string
   const uri =
     "mongodb+srv://spacesangsoo:recharge1@main.smgwwyi.mongodb.net/?retryWrites=true&w=majority";

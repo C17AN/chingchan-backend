@@ -5,5 +5,7 @@ provider:
   region: ap-northeast-2
 
 functions:
-  readData:
-    handler: handler.readData
+  getUserData:
+    handler: getUserData.handler
+  postUserData:
+    handler: postUserData.handler
