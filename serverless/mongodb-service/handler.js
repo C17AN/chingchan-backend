@@ -1,18 +1,37 @@
-'use strict';
+"use strict";
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
+const { ServerApiVersion } = require("mongodb");
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+const MongoClient = require("mongodb").MongoClient;
+
+module.exports.readData = async (event, context) => {
+  // MongoDB connection string
+  const uri =
+    "mongodb+srv://spacesangsoo:recharge1@main.smgwwyi.mongodb.net/?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: ServerApiVersion.v1,
+  });
+
+  try {
+    console.log("Connecting to MongoDB");
+    await client.connect();
+    const collection = client.db("main").collection("user");
+    console.log("Connected to MongoDB");
+    const result = await collection.find().toArray();
+    console.log("result: ", result);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result),
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Failed to read data from MongoDB" }),
+    };
+  } finally {
+    await client.close();
+  }
 };
